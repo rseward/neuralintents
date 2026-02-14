@@ -85,7 +85,8 @@ class BasicAssistant:
 
         if self.hidden_layers is None:
             self.model = Sequential()
-            self.model.add(InputLayer(input_shape=(None, X.shape[1])))
+            #self.model.add(InputLayer(input_shape=(None, X.shape[1])))
+            self.model.add(InputLayer(input_shape=(X.shape[1],)))
             self.model.add(Dense(128, activation='relu'))
             self.model.add(Dropout(0.5))
             self.model.add(Dense(64, activation='relu'))
@@ -108,13 +109,17 @@ class BasicAssistant:
 
     def save_model(self):
         self.model.save(f"{self.model_name}.keras", self.history)
-        pickle.dump(self.words, open(f'{self.model_name}_words.pkl', 'wb'))
-        pickle.dump(self.intents, open(f'{self.model_name}_intents.pkl', 'wb'))
+        with open(f'{self.model_name}_words.pkl', 'wb') as outf:
+            pickle.dump(self.words, outf)
+        with open(f'{self.model_name}_intents.pkl', 'wb') as outf:
+            pickle.dump(self.intents, outf)
     
     def load_model(self):
         self.model = load_model(f'{self.model_name}.keras')
-        self.words = pickle.load(open(f'{self.model_name}_words.pkl', 'rb'))
-        self.intents = pickle.load(open(f'{self.model_name}_intents.pkl', 'rb'))
+        with open(f'{self.model_name}_words.pkl', 'rb') as inf:        
+            self.words = pickle.load(inf)
+        with open(f'{self.model_name}_intents.pkl', 'rb') as inf:                    
+            self.intents = pickle.load(inf)
 
     def _predict_intent(self, input_text: str):
         input_words = nltk.word_tokenize(input_text)

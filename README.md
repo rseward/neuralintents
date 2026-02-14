@@ -1,6 +1,8 @@
 # neuralintents
 
-Still in a buggy alpha state.
+Still in a buggy alpha state. 
+
+But this buggy version from Rob Seward works with later pytorch versions.
 
 ## Setting Up A Basic Assistant
 
